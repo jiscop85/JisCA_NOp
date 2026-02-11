@@ -1,0 +1,60 @@
+version: '3.8'
+
+services:
+  mongodb:
+    image: mongo:6
+    container_name: jisca_nop_mongodb
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_PASSWORD:-changeme}
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
+    networks:
+      - jisca_network
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: jisca_nop_backend
+    restart: always
+    ports:
+      - "8001:8001"
+    environment:
+      - MONGO_URL=mongodb://admin:${MONGO_PASSWORD:-changeme}@mongodb:27017
+      - DB_NAME=jisca_nop
+      - CORS_ORIGINS=http://localhost:3000,http://localhost
+    volumes:
+      - ./backend/uploads:/app/uploads
+      - ./backend/outputs:/app/outputs
+      - ./backend/models:/app/models
+    depends_on:
+      - mongodb
+    networks:
+      - jisca_network
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: jisca_nop_frontend
+    restart: always
+    ports:
+      - "80:80"
+    environment:
+      - REACT_APP_BACKEND_URL=http://localhost:8001
+    depends_on:
+      - backend
+    networks:
+      - jisca_network
+
+volumes:
+  mongodb_data:
+    driver: local
+
+networks:
+  jisca_network:
+    driver: bridge
