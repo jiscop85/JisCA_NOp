@@ -120,6 +120,57 @@
       "Glitch: On hover for logos/titles"
     ]
   },
-
+  "assets": {
+    "images": [
+      {
+        "category": "hero_background",
+        "url": "https://images.pexels.com/photos/35291220/pexels-photo-35291220.jpeg",
+        "description": "Long exposure highway traffic at night, cyberpunk vibes",
+        "usage": "Hero section background with heavy overlay"
+      },
+      {
+        "category": "live_detection_preview",
+        "url": "https://images.pexels.com/photos/430208/pexels-photo-430208.jpeg",
+        "description": "CCTV camera view",
+        "usage": "Placeholder for live feed or 'How it works' section"
+      },
+      {
+        "category": "processing_abstract",
+        "url": "https://images.pexels.com/photos/8386440/pexels-photo-8386440.jpeg",
+        "description": "Abstract blue technology data stream",
+        "usage": "Background for 'Processing' state or loading screens"
+      }
+    ],
+    "icons": "Lucide React (default). Use 'Scan', 'Camera', 'Activity', 'Zap', 'Shield' icons."
+  },
+  "motion": {
+    "library": "Framer Motion",
+    "transitions": {
+      "hover": "duration-200 ease-out",
+      "page_load": "duration-500 ease-in-out"
+    },
+    "animations": [
+      "Scanning Line: A vertical line moving across the video feed.",
+      "Fade In Up: Standard entrance for cards.",
+      "Pulse: For 'Live' indicators."
+    ]
+  },
+  "instructions_to_main_agent": [
+    "1. INSTALL FONTS FIRST: Add the Google Fonts link to the index.html or import in CSS.",
+    "2. CONFIGURE TAILWIND: Update tailwind.config.js with the 'Neon Operator' colors and font families.",
+    "3. BUILD LAYOUTS: Use the 'Tetris Grid' for the landing page and 'Control Room' for the app.",
+    "4. CUSTOMIZE SHADCN: Override default radii to 'rounded-sm' or 'rounded-none'. Remove default shadows and replace with 'glows'.",
+    "5. USE MOCK DATA: When building the Results Gallery, use mock data with the provided images to show how the grid looks.",
+    "6. DATA-TESTID: Ensure every button and input has a data-testid attribute."
+  ],
+  "universal_guidelines": [
+    "Do not use 'Inter' for headings.",
+    "Do not use gradients for text unless it's a very subtle shine.",
+    "Always use 'JetBrains Mono' for any number or code.",
+    "Ensure contrast ratios are met (Cyan on Black is good, Blue on Black is bad).",
+    "Use 'sonner' for toasts."
+  ]
+}
   
+
 
