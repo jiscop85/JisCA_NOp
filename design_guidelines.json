@@ -4,4 +4,70 @@
     "archetype": "The Anti-AI Designer",
     "mission": "Create a top 1% computer vision interface that feels like a sci-fi control room, not a generic SaaS dashboard."
   },
-  
+"design_philosophy": {
+    "core_principles": [
+      "Fusion over Imitation: Mix Industrial CCTV aesthetics with Cyberpunk neon.",
+      "Emotion First: The user should feel like a 'Operator' in a high-tech security center.",
+      "Content is King: The 'Plate' and the 'Detection' are the heroes. Everything else recedes.",
+      "Zoom In: Use dramatic crops of license plates.",
+      "Negative Space: Don't clutter. Use void black space to make neon pop."
+    ],
+    "anti_patterns": [
+      "No generic 'SaaS Blue' gradients.",
+      "No 'Inter' for headings.",
+      "No centered layouts for data.",
+      "No rounded 'pill' buttons (use sharp or slightly rounded industrial shapes)."
+    ]
+  },
+  "typography": {
+    "headings": {
+      "font_family": "Unbounded, sans-serif",
+      "weights": ["400", "700", "900"],
+      "usage": "Main page titles, hero text, major section headers.",
+      "letter_spacing": "tracking-tight"
+    },
+    "body": {
+      "font_family": "Manrope, sans-serif",
+      "weights": ["400", "500", "600"],
+      "usage": "General UI text, descriptions, instructions."
+    },
+    "mono": {
+      "font_family": "JetBrains Mono, monospace",
+      "weights": ["400", "700"],
+      "usage": "License plate text, confidence scores, timestamps, JSON data.",
+      "letter_spacing": "tracking-wide"
+    },
+    "installation": "Import from Google Fonts: https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Manrope:wght@400;500;600&family=Unbounded:wght@400;700;900&display=swap"
+  },
+  "colors": {
+    "palette_name": "Neon Operator",
+    "mode": "Dark Mode Default",
+    "base": {
+      "background": "#09090b",
+      "foreground": "#f4f4f5",
+      "card": "#18181b",
+      "card_foreground": "#f4f4f5",
+      "popover": "#09090b",
+      "popover_foreground": "#f4f4f5",
+      "border": "#27272a",
+      "input": "#27272a"
+    },
+    "brand": {
+      "primary": "#00f0ff",
+      "primary_foreground": "#000000",
+      "secondary": "#7c3aed",
+      "secondary_foreground": "#ffffff",
+      "accent": "#22c55e",
+      "accent_foreground": "#000000",
+      "destructive": "#ef4444",
+      "destructive_foreground": "#ffffff"
+    },
+    "functional": {
+      "detection_box": "#00f0ff",
+      "confidence_high": "#22c55e",
+      "confidence_medium": "#eab308",
+      "confidence_low": "#ef4444",
+      "plate_bg": "#ffffff",
+      "plate_text": "#000000"
+    },
+   
