@@ -124,3 +124,48 @@ success = response.status_code == expected_status
             200,
             files=files
         )
+
+ if success:
+            # Check response structure
+            if 'success' in response and 'message' in response:
+                print(f"   Detection success: {response.get('success')}")
+                print(f"   Message: {response.get('message')}")
+                if response.get('detection'):
+                    detection = response['detection']
+                    print(f"   Plate text: {detection.get('plate_text', 'N/A')}")
+                    print(f"   Confidence: {detection.get('confidence', 'N/A')}")
+                return True
+            else:
+                self.log_test("Single Image Detection - Response Structure", False, "Missing required fields in response")
+                return False
+        
+        return success
+
+    def test_batch_detection(self):
+        """Test batch image detection endpoint"""
+        # Create multiple test images
+        files = []
+        for i in range(2):
+            test_image = self.create_test_image()
+            files.append(('files', (f'test_image_{i}.jpg', test_image, 'image/jpeg')))
+        
+        success, response = self.run_test(
+            "Batch Image Detection",
+            "POST",
+            "api/detect/batch",
+            200,
+            files=files
+        )
+        
+        if success:
+            # Check response structure
+            if 'success' in response and 'total' in response:
+                print(f"   Total processed: {response.get('total')}")
+                print(f"   Successful: {response.get('successful')}")
+                print(f"   Failed: {response.get('failed')}")
+                return True
+            else:
+                self.log_test("Batch Detection - Response Structure", False, "Missing required fields in response")
+                return False
+        
+        return success
