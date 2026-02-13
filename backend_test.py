@@ -210,3 +210,60 @@ success = response.status_code == expected_status
         )
         
         return success1 and success2
+
+def run_all_tests(self):
+        """Run all API tests"""
+        print("🚀 Starting ANPR Backend API Tests")
+        print(f"📍 Base URL: {self.base_url}")
+        print("=" * 60)
+        
+        # Test basic connectivity
+        self.test_root_endpoint()
+        
+        # Test status endpoints
+        self.test_status_endpoints()
+        
+        # Test detection endpoints
+        self.test_single_image_detection()
+        self.test_batch_detection()
+        
+        # Test gallery endpoints
+        self.test_detections_endpoints()
+        
+        # Test file serving
+        self.test_file_serving()
+        
+        # Print summary
+        print("\n" + "=" * 60)
+        print(f"📊 Test Summary: {self.tests_passed}/{self.tests_run} tests passed")
+        
+        if self.tests_passed == self.tests_run:
+            print("🎉 All tests passed!")
+            return 0
+        else:
+            print(f"⚠️  {self.tests_run - self.tests_passed} tests failed")
+            return 1
+
+    def get_test_summary(self):
+        """Get test results summary"""
+        return {
+            "total_tests": self.tests_run,
+            "passed_tests": self.tests_passed,
+            "failed_tests": self.tests_run - self.tests_passed,
+            "success_rate": (self.tests_passed / self.tests_run * 100) if self.tests_run > 0 else 0,
+            "test_results": self.test_results
+        }
+
+def main():
+    tester = ANPRAPITester()
+    exit_code = tester.run_all_tests()
+    
+    # Save test results
+    results = tester.get_test_summary()
+    with open('/app/backend_test_results.json', 'w') as f:
+        json.dump(results, f, indent=2)
+    
+    return exit_code
+
+if __name__ == "__main__":
+    sys.exit(main())
