@@ -61,3 +61,66 @@ class ANPRAPITester:
 
             print(f"   Status: {response.status_code}")
             
+success = response.status_code == expected_status
+            details = ""
+            
+            if success:
+                try:
+                    response_data = response.json()
+                    print(f"   Response: {json.dumps(response_data, indent=2)[:200]}...")
+                except:
+                    print(f"   Response: {response.text[:200]}...")
+            else:
+                details = f"Expected {expected_status}, got {response.status_code}. Response: {response.text[:200]}"
+                print(f"   Error: {details}")
+
+            self.log_test(name, success, details)
+            return success, response.json() if success and response.content else {}
+
+        except Exception as e:
+            error_msg = f"Request failed: {str(e)}"
+            print(f"   Exception: {error_msg}")
+            self.log_test(name, False, error_msg)
+            return False, {}
+
+    def create_test_image(self, width=640, height=480, format='JPEG'):
+        """Create a simple test image"""
+        img = Image.new('RGB', (width, height), color='white')
+        img_bytes = io.BytesIO()
+        img.save(img_bytes, format=format)
+        img_bytes.seek(0)
+        return img_bytes
+
+    def test_root_endpoint(self):
+        """Test root API endpoint"""
+        return self.run_test("Root Endpoint", "GET", "api/", 200)
+
+    def test_status_endpoints(self):
+        """Test status check endpoints"""
+        # Test POST status
+        success1, response1 = self.run_test(
+            "Create Status Check", 
+            "POST", 
+            "api/status", 
+            200,
+            data={"client_name": "test_client"}
+        )
+        
+        # Test GET status
+        success2, response2 = self.run_test("Get Status Checks", "GET", "api/status", 200)
+        
+        return success1 and success2
+
+    def test_single_image_detection(self):
+        """Test single image detection endpoint"""
+        # Create test image
+        test_image = self.create_test_image()
+        files = {'file': ('test_image.jpg', test_image, 'image/jpeg')}
+        
+        success, response = self.run_test(
+            "Single Image Detection",
+            "POST",
+            "api/detect/image",
+            200,
+            files=files
+        )
