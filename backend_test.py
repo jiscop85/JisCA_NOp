@@ -169,3 +169,44 @@ success = response.status_code == expected_status
                 return False
         
         return success
+
+ def test_detections_endpoints(self):
+        """Test detection history endpoints"""
+        # Test GET detections
+        success1, response1 = self.run_test("Get Detections", "GET", "api/detections", 200)
+        
+        if success1:
+            print(f"   Found {len(response1)} detections")
+            
+            # If we have detections, test individual detection endpoint
+            if response1 and len(response1) > 0:
+                detection_id = response1[0].get('id')
+                if detection_id:
+                    success2, response2 = self.run_test(
+                        "Get Single Detection",
+                        "GET",
+                        f"api/detections/{detection_id}",
+                        200
+                    )
+                    return success1 and success2
+        
+        return success1
+
+    def test_file_serving(self):
+        """Test file serving endpoints"""
+        # This test will likely fail since we don't have actual files, but we test the endpoint structure
+        success1, _ = self.run_test(
+            "File Serving - Uploads",
+            "GET",
+            "api/files/uploads/nonexistent.jpg",
+            404  # Expecting 404 for non-existent file
+        )
+        
+        success2, _ = self.run_test(
+            "File Serving - Outputs", 
+            "GET",
+            "api/files/outputs/nonexistent.jpg",
+            404  # Expecting 404 for non-existent file
+        )
+        
+        return success1 and success2
