@@ -4,4 +4,54 @@
   "failed_tests": 0,
   "success_rate": 100.0,
   "test_results": [
+ {
+      "test": "Root Endpoint",
+      "success": true,
+      "details": "",
+      "timestamp": "2025-12-24T13:10:45.128450"
+    },
+    {
+      "test": "Create Status Check",
+      "success": true,
+      "details": "",
+      "timestamp": "2025-12-24T13:10:45.217712"
+    },
+    {
+      "test": "Get Status Checks",
+      "success": true,
+      "details": "",
+      "timestamp": "2025-12-24T13:10:45.261856"
+    },
+    {
+      "test": "Single Image Detection",
+      "success": true,
+      "details": "",
+      "timestamp": "2025-12-24T13:10:46.694006"
+    },
+    {
+      "test": "Batch Image Detection",
+      "success": true,
+      "details": "",
+      "timestamp": "2025-12-24T13:10:47.383719"
+    },
+    {
+      "test": "Get Detections",
+      "success": true,
+      "details": "",
+      "timestamp": "2025-12-24T13:10:47.426020"
+    },
+    {
+      "test": "File Serving - Uploads",
+      "success": true,
+      "details": "",
+      "timestamp": "2025-12-24T13:10:47.467185"
+    },
+    {
+      "test": "File Serving - Outputs",
+      "success": true,
+      "details": "",
+      "timestamp": "2025-12-24T13:10:47.507251"
+    }
+  ]
+}
    
