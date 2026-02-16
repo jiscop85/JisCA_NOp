@@ -6,3 +6,14 @@ metadata:
 data:
   DB_NAME: "jisca_nop"
   CORS_ORIGINS: "*"
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: jisca-nop-secrets
+  namespace: jisca-nop
+type: Opaque
+stringData:
+  MONGO_URL: "mongodb://admin:changeme@mongodb:27017"
+  MONGO_PASSWORD: "changeme"
+
