@@ -1,0 +1,86 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend
+  namespace: jisca-nop
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: backend
+  template:
+    metadata:
+      labels:
+        app: backend
+    spec:
+      containers:
+      - name: backend
+        image: jisca-nop-backend:latest
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8001
+        env:
+        - name: MONGO_URL
+          valueFrom:
+            secretKeyRef:
+              name: jisca-nop-secrets
+              key: MONGO_URL
+        - name: DB_NAME
+          valueFrom:
+            configMapKeyRef:
+              name: jisca-nop-config
+              key: DB_NAME
+        - name: CORS_ORIGINS
+          valueFrom:
+            configMapKeyRef:
+              name: jisca-nop-config
+              key: CORS_ORIGINS
+        volumeMounts:
+        - name: uploads
+          mountPath: /app/uploads
+        - name: outputs
+          mountPath: /app/outputs
+        - name: models
+          mountPath: /app/models
+        resources:
+          requests:
+            memory: "1Gi"
+            cpu: "500m"
+          limits:
+            memory: "2Gi"
+            cpu: "1000m"
+        livenessProbe:
+          httpGet:
+            path: /api/
+            port: 8001
+          initialDelaySeconds: 30
+          periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /api/
+            port: 8001
+          initialDelaySeconds: 10
+          periodSeconds: 5
+      volumes:
+      - name: uploads
+        persistentVolumeClaim:
+          claimName: uploads-pvc
+      - name: outputs
+        persistentVolumeClaim:
+          claimName: outputs-pvc
+      - name: models
+        persistentVolumeClaim:
+          claimName: models-pvc
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: backend
+  namespace: jisca-nop
+spec:
+  selector:
+    app: backend
+  ports:
+  - port: 8001
+    targetPort: 8001
+  type: ClusterIP
