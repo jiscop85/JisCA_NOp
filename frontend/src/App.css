@@ -19,4 +19,42 @@
     pointer-events: none;
     z-index: 9999;
 }
+/* Glow animation */
+@keyframes glow {
+    0%, 100% {
+        box-shadow: 0 0 20px rgba(0, 240, 255, 0.3);
+    }
+    50% {
+        box-shadow: 0 0 40px rgba(0, 240, 255, 0.6);
+    }
+}
+
+.glow-animate {
+    animation: glow 2s ease-in-out infinite;
+}
+
+/* Smooth scrolling */
+html {
+    scroll-behavior: smooth;
+}
+
+/* Custom scrollbar for dark theme */
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: #09090b;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #27272a;
+    border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #3f3f46;
+}
+
+
 
