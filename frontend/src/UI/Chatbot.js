@@ -96,6 +96,63 @@ const Chatbot = () => {
       }
     }
     
- 
+    if (msg.includes('error') || msg.includes('problem') || msg.includes('not work') || msg.includes('fail')) {
+      return "🔧 Troubleshooting:\n\n1️⃣ Check backend: curl localhost:8001/api/\n2️⃣ Verify image quality & format\n3️⃣ Review logs: tail -f /var/log/supervisor/backend.err.log\n4️⃣ Ensure MongoDB is running\n5️⃣ Lower confidence threshold if needed\n\nStill stuck? Check DEPLOYMENT_GUIDE.md or describe your specific error.";
+    }
+    
+    if (msg.includes('model') || msg.includes('yolo') || msg.includes('train')) {
+      return "🤖 About the AI Model:\n\n🔹 Current: YOLOv8n (fallback, general detection)\n🔹 Recommended: Custom YOLOv8 trained on plates\n🔹 Download from: Roboflow Universe\n🔹 Accuracy boost: 60% → 99%+\n\n📥 Setup: Place best.pt in /app/backend/models/\n\nWant to train your own model? I can guide you!";
+    }
+    
+    if (msg.includes('thank') || msg.includes('thanks')) {
+      return "You're welcome! 😊 Happy to help anytime. If you have more questions about JisCA_NOp, just ask!";
+    }
+    
+    if (msg.includes('contact') || msg.includes('support') || msg.includes('email')) {
+      return "📧 Contact & Support:\n\n✉️ Email: arash.javadyfar@gmail.com\n💻 GitHub: Jisc_op\n📚 Documentation: README.md & DEPLOYMENT_GUIDE.md\n🐛 Issues: GitHub Issues\n\nFor urgent support, please email with [JisCA_NOp] in the subject line.";
+    }
+    
+    // Default response
+    return "🤔 I'm not sure about that specific question, but I can help you with:\n\n• System features and capabilities\n• How to use the detection system\n• API integration and endpoints\n• Deployment and configuration\n• Troubleshooting issues\n• Admin panel features\n• Analytics and statistics\n\nWhat would you like to know more about?";
+  };
+
+  const handleSendMessage = async () => {
+    if (!inputMessage.trim()) return;
+
+    const userMsg = {
+      id: messages.length + 1,
+      type: 'user',
+      text: inputMessage,
+      timestamp: new Date()
+    };
+
+    setMessages(prev => [...prev, userMsg]);
+    setInputMessage('');
+    setIsTyping(true);
+
+    // Simulate typing delay
+    setTimeout(async () => {
+      const botResponse = await generateBotResponse(inputMessage);
+      
+      const botMsg = {
+        id: messages.length + 2,
+        type: 'bot',
+        text: botResponse,
+        timestamp: new Date()
+      };
+
+      setMessages(prev => [...prev, botMsg]);
+      setIsTyping(false);
+    }, 1000 + Math.random() * 1000); // Random delay for realism
+  };
+
+  const handleKeyPress = (e) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      handleSendMessage();
+    }
+  };
+
 
  
+
