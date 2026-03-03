@@ -243,7 +243,65 @@ const Chatbot = () => {
                 </motion.div>
               ))}
               
-        
+              {isTyping && (
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  className="flex items-start space-x-2"
+                >
+                  <div className="w-8 h-8 rounded-sm bg-gradient-to-br from-cyan-500 to-violet-500 flex items-center justify-center">
+                    <Bot className="w-5 h-5 text-black" />
+                  </div>
+                  <div className="bg-zinc-800 border border-zinc-700 rounded-sm p-3">
+                    <div className="flex space-x-1">
+                      <div className="w-2 h-2 bg-zinc-600 rounded-full animate-bounce"></div>
+                      <div className="w-2 h-2 bg-zinc-600 rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
+                      <div className="w-2 h-2 bg-zinc-600 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
+                    </div>
+                  </div>
+                </motion.div>
+              )}
+              <div ref={messagesEndRef} />
+            </div>
+
+            {/* Input */}
+            <div className="p-4 bg-zinc-900 border-t border-zinc-800">
+              <div className="flex items-center space-x-2">
+                <Input
+                  ref={inputRef}
+                  type="text"
+                  placeholder="Ask me anything..."
+                  value={inputMessage}
+                  onChange={(e) => setInputMessage(e.target.value)}
+                  onKeyPress={handleKeyPress}
+                  data-testid="chatbot-input"
+                  className="flex-1 bg-zinc-950 border-zinc-800 focus:border-cyan-500 text-white"
+                />
+                <Button
+                  onClick={handleSendMessage}
+                  disabled={!inputMessage.trim() || isTyping}
+                  data-testid="chatbot-send-button"
+                  className="bg-cyan-500 hover:bg-cyan-400 text-black font-bold px-4 rounded-sm disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  <Send className="w-5 h-5" />
+                </Button>
+              </div>
+              <p className="text-xs text-zinc-600 mt-2 text-center">
+                AI-powered • Instant responses
+              </p>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </>
+  );
+};
+
+export default Chatbot;
+
+
+ 
+
 
 
 
