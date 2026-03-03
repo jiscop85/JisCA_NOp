@@ -152,7 +152,62 @@ const Chatbot = () => {
       handleSendMessage();
     }
   };
+  return (
+    <>
+      {/* Chat Button */}
+      <AnimatePresence>
+        {!isOpen && (
+          <motion.div
+            initial={{ scale: 0 }}
+            animate={{ scale: 1 }}
+            exit={{ scale: 0 }}
+            className="fixed bottom-6 right-6 z-50"
+          >
+            <Button
+              onClick={() => setIsOpen(true)}
+              data-testid="chatbot-open-button"
+              className="w-16 h-16 rounded-full bg-gradient-to-br from-cyan-500 to-violet-500 hover:from-cyan-400 hover:to-violet-400 shadow-[0_0_30px_rgba(0,240,255,0.4)] hover:shadow-[0_0_40px_rgba(0,240,255,0.6)] transition-all duration-300 flex items-center justify-center"
+            >
+              <MessageCircle className="w-7 h-7 text-black" />
+            </Button>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
+      {/* Chat Window */}
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            initial={{ opacity: 0, y: 20, scale: 0.95 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 20, scale: 0.95 }}
+            transition={{ duration: 0.2 }}
+            className="fixed bottom-6 right-6 z-50 w-[400px] h-[600px] bg-zinc-900 border border-cyan-500/30 rounded-sm shadow-[0_0_50px_rgba(0,240,255,0.3)] flex flex-col overflow-hidden"
+            data-testid="chatbot-window"
+          >
+            {/* Header */}
+            <div className="bg-gradient-to-r from-cyan-500 to-violet-500 p-4 flex items-center justify-between">
+              <div className="flex items-center space-x-3">
+                <div className="w-10 h-10 bg-black/20 rounded-sm flex items-center justify-center">
+                  <Sparkles className="w-6 h-6 text-white" />
+                </div>
+                <div>
+                  <h3 className="font-heading font-bold text-black">JisCA_NOp AI</h3>
+                  <p className="text-xs text-black/70">Smart Assistant</p>
+                </div>
+              </div>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => setIsOpen(false)}
+                className="text-black hover:bg-black/10"
+                data-testid="chatbot-close-button"
+              >
+                <X className="w-5 h-5" />
+              </Button>
+            </div>
 
+    
  
+
 
