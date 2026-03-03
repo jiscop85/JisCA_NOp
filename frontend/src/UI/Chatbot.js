@@ -207,7 +207,43 @@ const Chatbot = () => {
               </Button>
             </div>
 
-    
- 
+            {/* Messages */}
+            <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-zinc-950">
+              {messages.map((message) => (
+                <motion.div
+                  key={message.id}
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.3 }}
+                  className={`flex items-start space-x-2 ${message.type === 'user' ? 'flex-row-reverse space-x-reverse' : ''}`}
+                >
+                  <div className={`w-8 h-8 rounded-sm flex items-center justify-center flex-shrink-0 ${
+                    message.type === 'bot' 
+                      ? 'bg-gradient-to-br from-cyan-500 to-violet-500' 
+                      : 'bg-zinc-800'
+                  }`}>
+                    {message.type === 'bot' ? (
+                      <Bot className="w-5 h-5 text-black" />
+                    ) : (
+                      <User className="w-5 h-5 text-white" />
+                    )}
+                  </div>
+                  <div className={`max-w-[75%] ${
+                    message.type === 'bot'
+                      ? 'bg-zinc-800 border border-zinc-700'
+                      : 'bg-cyan-500/10 border border-cyan-500/30'
+                  } rounded-sm p-3`}>
+                    <p className="text-sm text-white whitespace-pre-line leading-relaxed">
+                      {message.text}
+                    </p>
+                    <p className="text-xs text-zinc-600 mt-1">
+                      {message.timestamp.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })}
+                    </p>
+                  </div>
+                </motion.div>
+              ))}
+              
+        
+
 
 
