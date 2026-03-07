@@ -1,0 +1,1 @@
+import * as CollapsiblePrimtive from "@radix-ui/react-collapsible"
