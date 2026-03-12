@@ -1,0 +1,63 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modern React Project</title>
+    <script src="https://unpkg.com/react@17/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
+    <link href="https://unpkg.com/react-dom@17/dist/react-dom.min.css" rel="stylesheet">
+    <style>
+        .header {
+            padding: 2rem;
+        }
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1rem;
+        }
+        .stat-item {
+            padding: 1rem;
+            background: #f5f5f5;
+            border-radius: 1rem;
+        }
+        .recent-section {
+            grid-template-columns: 1fr;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .recent-item {
+            display: flex;
+            align-items: center;
+            padding: 1rem;
+            border-radius: 1rem;
+        }
+        .icon {
+            width: 40px;
+            height: 40px;
+            margin-right: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <div className="header">
+        <h1>Modern React</h1>
+    </div>
+
+    <div className="stats">
+        <div className="stat-item">
+            <span>Components</span>
+            <span>10</span>
+        </div>
+        <div className="stat-item">
+            <span>State</span>
+            <span>4</span>
+        </div>
+        <div className="stat-item">
+            <span>Events</span>
+            <span>2</span>
+        </div>
+    </div>
+
+ 
