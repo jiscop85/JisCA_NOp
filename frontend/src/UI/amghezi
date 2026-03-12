@@ -59,5 +59,57 @@
             <span>2</span>
         </div>
     </div>
+   <div className="recent-section">
+        <h2>Recent Activity</h2>
+        <div className="recent-item">
+            <i className="icon"></i>
+            <h3>Web Development</h3>
+        </div>
+        <div className="recent-item">
+            <i className="icon"></i>
+            <h3>UI/UX Design</h3>
+        </div>
+        <div className="recent-item">
+            <i className="icon"></i>
+            <h3>Backend Integration</h3>
+        </div>
+    </div>
 
+    <div className=" footer">
+        <p>© 2023 Modern React. All rights reserved.</p>
+    </div>
+
+    <script>
+        const stats = {
+            components: 10,
+            state: 4,
+            events: 2
+        };
+
+        const recentActivities = [
+            { title: 'Web Development', icon: '🏠' },
+            { title: 'UI/UX Design', icon: '📱' },
+            { title: 'Backend Integration', icon: '✅' }
+        ];
+
+        return (
+            <div className="stats">
+                <div className="stat-item">
+                    <span id="stat-item-1" className="stat-number">{stats.components}</span>
+                    <span className="stat-label" id="stat-label-1">Components</span>
+                </div>
+                <div className="stat-item">
+                    <span id="stat-item-2" className="stat-number">{stats.state}</span>
+                    <span className="stat-label" id="stat-label-2">State</span>
+                </div>
+                <div className="stat-item">
+                    <span id="stat-item-3" className="stat-number">{stats.events}</span>
+                    <span className="stat-label" id="stat-label-3">Events</span>
+                </div>
+            </div>
+        );
+    </script>
+</body>
+</html>
+```
  
