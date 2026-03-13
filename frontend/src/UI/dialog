@@ -98,3 +98,170 @@ function useFetch(url, initialData = null) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  useEffect(() => {
+    let isMounted = true;
+    const fetchData = async () => {
+      try {
+        setLoading(true);
+        // Simulate network request
+        const response = await new Promise((resolve) =>
+          setTimeout(() => resolve({ json: () => ({ message: 'Mock data from ' + url }) }), 1000)
+        );
+        const result = await response.json();
+        if (isMounted) {
+          setData(result);
+          setError(null);
+        }
+      } catch (err) {
+        if (isMounted) setError(err);
+      } finally {
+        if (isMounted) setLoading(false);
+      }
+    };
+    fetchData();
+    return () => {
+      isMounted = false;
+    };
+  }, [url]);
+
+  return { data, loading, error };
+}
+
+// ============================================
+// 3. Sub-components (some memoized for performance)
+// ============================================
+
+// A reusable Widget container with dynamic styling based on theme
+const Widget = memo(({ title, children, ...props }) => {
+  const { theme } = useContext(ThemeContext);
+  const isDark = theme.mode === 'dark';
+
+  const style = {
+    backgroundColor: isDark ? '#333' : '#f9f9f9',
+    color: isDark ? '#fff' : '#000',
+    padding: '1rem',
+    borderRadius: '8px',
+    boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
+    margin: '1rem',
+    flex: '1 1 300px',
+    transition: 'all 0.3s ease',
+  };
+
+  return (
+    <div style={style} {...props}>
+      <h3>{title}</h3>
+      {children}
+    </div>
+  );
+});
+
+// Chart component (simulated with simple bars)
+const Chart = memo(({ data }) => {
+  const max = Math.max(...data.map((d) => d.value));
+  return (
+    <div style={{ display: 'flex', justifyContent: 'space-around', alignItems: 'flex-end', height: '150px' }}>
+      {data.map((item, idx) => (
+        <div key={idx} style={{ textAlign: 'center', width: '40px' }}>
+          <div
+            style={{
+              height: `${(item.value / max) * 100}px`,
+              backgroundColor: '#61dafb',
+              width: '30px',
+              margin: '0 auto',
+              borderRadius: '4px 4px 0 0',
+            }}
+          />
+          <span>{item.label}</span>
+        </div>
+      ))}
+    </div>
+  );
+});
+
+// Data table component (simple)
+const DataTable = memo(({ rows }) => {
+  return (
+    <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+      <thead>
+        <tr>
+          <th style={{ borderBottom: '1px solid #ccc', padding: '0.5rem' }}>ID</th>
+          <th style={{ borderBottom: '1px solid #ccc', padding: '0.5rem' }}>Name</th>
+          <th style={{ borderBottom: '1px solid #ccc', padding: '0.5rem' }}>Value</th>
+        </tr>
+      </thead>
+      <tbody>
+        {rows.map((row) => (
+          <tr key={row.id}>
+            <td style={{ padding: '0.5rem', textAlign: 'center' }}>{row.id}</td>
+            <td style={{ padding: '0.5rem', textAlign: 'center' }}>{row.name}</td>
+            <td style={{ padding: '0.5rem', textAlign: 'center' }}>{row.value}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  );
+});
+
+// ============================================
+// 4. Main Advanced Dashboard Component
+// ============================================
+const AdvancedDashboard = () => {
+  const { theme, dispatch } = useContext(ThemeContext);
+  const windowSize = useWindowSize();
+  const [filter, setFilter] = useState('');
+
+  // useReducer for local dashboard state (widgets visibility, etc.)
+  const [dashboardState, localDispatch] = useReducer(
+    (state, action) => {
+      switch (action.type) {
+        case 'TOGGLE_WIDGET':
+          return {
+            ...state,
+            widgets: state.widgets.map((w) =>
+              w.id === action.id ? { ...w, hidden: !w.hidden } : w
+            ),
+          };
+        default:
+          return state;
+      }
+    },
+    {
+      widgets: [
+        { id: 1, title: 'Analytics Chart', hidden: false },
+        { id: 2, title: 'Data Overview', hidden: false },
+        { id: 3, title: 'Live Feed', hidden: true },
+      ],
+    }
+  );
+
+  // Fetch some data (custom hook)
+  const { data: apiData, loading, error } = useFetch('/api/dashboard', null);
+
+  // Memoized chart data to prevent recalculation
+  const chartData = useMemo(
+    () => [
+      { label: 'Jan', value: 40 },
+      { label: 'Feb', value: 55 },
+      { label: 'Mar', value: 75 },
+      { label: 'Apr', value: 20 },
+      { label: 'May', value: 90 },
+    ],
+    []
+  );
+
+  // Memoized table data
+  const tableData = useMemo(
+    () => [
+      { id: 1, name: 'Item A', value: 120 },
+      { id: 2, name: 'Item B', value: 85 },
+      { id: 3, name: 'Item C', value: 200 },
+      { id: 4, name: 'Item D', value: 45 },
+    ],
+    []
+  );
+
+  // Callback for toggling theme
+  const toggleTheme = useCallback(() => {
+    dispatch({ type: 'TOGGLE_THEME' });
+  }, [dispatch]);
+
