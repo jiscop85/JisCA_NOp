@@ -4,4 +4,11 @@ function App() {
   return (
     <div style={{ padding: '20px', fontFamily: 'Arial' }}>
       <h1>به اپلیکیشن من خوش آمدید</h1>
-      <p>این یک کامپوننت ساده با استفاده از JSX است.</p>
+      <p>این یک کامپوننت ساده با استفاده از JSX است.</p> <button onClick={() => alert('سلام!')}>
+        کلیک کن
+      </button>
+    </div>
+  );
+}
+
+export default App;
