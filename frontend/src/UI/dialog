@@ -265,3 +265,119 @@ const AdvancedDashboard = () => {
     dispatch({ type: 'TOGGLE_THEME' });
   }, [dispatch]);
 
+
+
+  // Use ref to focus on filter input after mount
+  const inputRef = useRef(null);
+  useEffect(() => {
+    inputRef.current?.focus();
+  }, []);
+
+  // Filtered widgets based on search input
+  const filteredWidgets = dashboardState.widgets.filter((w) =>
+    w.title.toLowerCase().includes(filter.toLowerCase())
+  );
+
+  // Dynamic styles based on theme
+  const isDark = theme.mode === 'dark';
+  const dashboardStyle = {
+    backgroundColor: isDark ? '#222' : '#fff',
+    color: isDark ? '#eee' : '#111',
+    minHeight: '100vh',
+    padding: '2rem',
+    transition: 'background-color 0.3s, color 0.3s',
+  };
+
+  return (
+    <div style={dashboardStyle}>
+      {/* Header with theme toggle and responsive info */}
+      <header style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem' }}>
+        <h1>Advanced Dashboard</h1>
+        <div>
+          <span style={{ marginRight: '1rem' }}>
+            Window: {windowSize.width} x {windowSize.height}
+          </span>
+          <button
+            onClick={toggleTheme}
+            style={{
+              padding: '0.5rem 1rem',
+              backgroundColor: isDark ? '#f0f0f0' : '#333',
+              color: isDark ? '#000' : '#fff',
+              border: 'none',
+              borderRadius: '4px',
+              cursor: 'pointer',
+            }}
+          >
+            Switch to {isDark ? 'Light' : 'Dark'} Mode
+          </button>
+        </div>
+      </header>
+
+      {/* Search filter */}
+      <div style={{ marginBottom: '1rem' }}>
+        <label htmlFor="filter">Filter Widgets: </label>
+        <input
+          id="filter"
+          type="text"
+          value={filter}
+          onChange={(e) => setFilter(e.target.value)}
+          ref={inputRef}
+          style={{ padding: '0.5rem', marginLeft: '0.5rem' }}
+          placeholder="Type to filter..."
+        />
+      </div>
+
+      {/* API Data display (loading/error) */}
+      <section style={{ marginBottom: '2rem' }}>
+        <h2>API Data (custom hook)</h2>
+        {loading && <p>Loading...</p>}
+        {error && <p style={{ color: 'red' }}>Error: {error.message}</p>}
+        {apiData && <pre>{JSON.stringify(apiData, null, 2)}</pre>}
+      </section>
+
+      {/* Widgets area - flex wrap for responsiveness */}
+      <div style={{ display: 'flex', flexWrap: 'wrap', margin: '-1rem' }}>
+        {filteredWidgets.map(
+          (widget) =>
+            !widget.hidden && (
+              <Widget key={widget.id} title={widget.title}>
+                {widget.id === 1 && <Chart data={chartData} />}
+                {widget.id === 2 && <DataTable rows={tableData} />}
+                {widget.id === 3 && (
+                  <div>
+                    <p>Live updates (simulated)</p>
+                    <p>Last updated: {new Date().toLocaleTimeString()}</p>
+                  </div>
+                )}
+                <button
+                  onClick={() => localDispatch({ type: 'TOGGLE_WIDGET', id: widget.id })}
+                  style={{ marginTop: '1rem', padding: '0.25rem 0.5rem' }}
+                >
+                  Hide Widget
+                </button>
+              </Widget>
+            )
+        )}
+      </div>
+
+      {/* Show a message if no widgets match filter */}
+      {filteredWidgets.length === 0 && (
+        <p style={{ textAlign: 'center', marginTop: '2rem' }}>No widgets match your filter.</p>
+      )}
+    </div>
+  );
+};
+
+// ============================================
+// 5. Root App Component (wrapped with providers)
+// ============================================
+const App = () => {
+  return (
+    <ThemeProvider>
+      <AdvancedDashboard />
+    </ThemeProvider>
+  );
+};
+
+export default App;
+
