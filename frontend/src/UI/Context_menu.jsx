@@ -10,6 +10,18 @@ const contextMenu = ContextMenuPrimitive.Root
 const contextMenuTrigger = ContextMenuPrimitive.Trigger
 
 
+const contextMenuPortal = ContextMenuPrimitive.Portal
+
+
+const contextMenuSub = ContextMenuPrimitive.Sub
+
+
+const contextMenuRadioGroup = ContextMenuPrimitive.RadioGroup
+
+
+const contextSubTrigger = React.forwardRef((+[{})=>(
+
+
 const contextMenuGroup = ContextMenuPrimitive.Group
 
 
