@@ -9,4 +9,41 @@ function App() {
   const [filtered, setFiltered] = useState([]);
   const [loading, setLoading] = useState(true);
 
+// شبیه‌سازی API
+  useEffect(() => {
+    setTimeout(() => {
+      setItems(data);
+      setFiltered(data);
+      setLoading(false);
+    }, 1500);
+  }, []);
+
+  // سرچ
+  const handleSearch = (text) => {
+    const result = items.filter((item) =>
+      item.title.toLowerCase().includes(text.toLowerCase())
+    );
+    setFiltered(result);
+  };
+
+  return (
+    <div className="app">
+      <h1>🚀 AI Dashboard</h1>
+
+      <SearchBar onSearch={handleSearch} />
+
+      {loading ? (
+        <Loader />
+      ) : (
+        <div className="grid">
+          {filtered.map((item) => (
+            <Card key={item.id} item={item} />
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
+export default App;
   
