@@ -8,3 +8,14 @@ const SearchBar = ({ onSearch }) => {
     onSearch(e.target.value);
   };
 
+  return (
+    <input
+      type="text"
+      placeholder="Search..."
+      value={text}
+      onChange={handleChange}
+    />
+  );
+};
+
+export default SearchBar;
