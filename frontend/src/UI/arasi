@@ -1,1 +1,26 @@
-import * as React from "react"
+body {
+  font-family: sans-serif;
+  background: #0f172a;
+  color: white;
+  margin: 0;
+}
+
+.app {
+  padding: 20px;
+  text-align: center;
+}
+
+input {
+  padding: 10px;
+  margin: 20px;
+  width: 250px;
+  border-radius: 10px;
+  border: none;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+}
+
