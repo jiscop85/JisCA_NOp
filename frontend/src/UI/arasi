@@ -24,3 +24,19 @@ input {
   gap: 20px;
 }
 
+
+.card {
+  background: #1e293b;
+  padding: 20px;
+  border-radius: 15px;
+  transition: 0.3s;
+}
+
+.card:hover {
+  transform: scale(1.05);
+  background: #334155;
+}
+
+.loader {
+  font-size: 20px;
+}
