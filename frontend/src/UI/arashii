@@ -1,1 +1,12 @@
-import * as React from "react"
+import { useEffect, useState } from "react";
+import data from "./data";
+import Card from "./components/Card";
+import SearchBar from "./components/SearchBar";
+import Loader from "./components/Loader";
+
+function App() {
+  const [items, setItems] = useState([]);
+  const [filtered, setFiltered] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  
