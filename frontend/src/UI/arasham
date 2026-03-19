@@ -1,1 +1,10 @@
-import * as React from "react"
+import { useState } from "react";
+
+const SearchBar = ({ onSearch }) => {
+  const [text, setText] = useState("");
+
+  const handleChange = (e) => {
+    setText(e.target.value);
+    onSearch(e.target.value);
+  };
+
