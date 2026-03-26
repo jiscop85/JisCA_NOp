@@ -24,3 +24,5 @@ def decode_token(token: str):
         return jwt.decode(token, settings.SECRET_KEY, algorithms=[settings.ALGORITHM])
     except JWTError:
         return None
+
+##for secure main passwords
