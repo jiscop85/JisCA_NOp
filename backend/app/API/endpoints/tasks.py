@@ -29,3 +29,40 @@ def add_task(
         status=task_in.status
     )
 
+@router.get("/{task_id}", response_model=TaskOut)
+def read_task(
+    task_id: int,
+    db: Session = Depends(get_db),
+    current_user=Depends(get_current_user)
+):
+    task = get_task(db, task_id, current_user.id)
+    if not task:
+        raise HTTPException(status_code=404, detail="Task not found")
+    return task
+
+@router.put("/{task_id}", response_model=TaskOut)
+def edit_task(
+    task_id: int,
+    task_in: TaskUpdate,
+    db: Session = Depends(get_db),
+    current_user=Depends(get_current_user)
+):
+    task = get_task(db, task_id, current_user.id)
+    if not task:
+        raise HTTPException(status_code=404, detail="Task not found")
+
+    update_data = task_in.model_dump(exclude_unset=True)
+    return update_task(db, task, update_data)
+
+@router.delete("/{task_id}")
+def remove_task(
+    task_id: int,
+    db: Session = Depends(get_db),
+    current_user=Depends(get_current_user)
+):
+    task = get_task(db, task_id, current_user.id)
+    if not task:
+        raise HTTPException(status_code=404, detail="Task not found")
+
+    delete_task(db, task)
+    return {"message": "Task deleted successfully"}
