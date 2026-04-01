@@ -65,3 +65,47 @@ class PlateDetector:
             results = self.model(image, conf=conf_threshold, verbose=False)
             
        
+     detections = []
+            for result in results:
+                boxes = result.boxes
+                for box in boxes:
+                    # Extract box coordinates
+                    x1, y1, x2, y2 = box.xyxy[0].cpu().numpy()
+                    confidence = float(box.conf[0].cpu().numpy())
+                    class_id = int(box.cls[0].cpu().numpy())
+                    
+                    detections.append({
+                        'bbox': [int(x1), int(y1), int(x2), int(y2)],
+                        'confidence': confidence,
+                        'class_id': class_id
+                    })
+            
+            logger.info(f"Detected {len(detections)} license plate(s)")
+            return detections
+            
+        except Exception as e:
+            logger.error(f"Error during detection: {e}")
+            return []
+    
+    def crop_plate(self, image: np.ndarray, bbox: List[int], padding: int = 5) -> np.ndarray:
+        """
+        Crop license plate region from image
+        
+        Args:
+            image: Original image
+            bbox: Bounding box [x1, y1, x2, y2]
+            padding: Pixels to pad around the crop
+            
+        Returns:
+            Cropped plate image
+        """
+        x1, y1, x2, y2 = bbox
+        h, w = image.shape[:2]
+        
+        # Add padding and ensure within bounds
+        x1 = max(0, x1 - padding)
+        y1 = max(0, y1 - padding)
+        x2 = min(w, x2 + padding)
+        y2 = min(h, y2 + padding)
+        
+        return image[y1:y2, x1:x2]
