@@ -97,3 +97,63 @@ class VehicleCreate(BaseModel):
     is_wanted: bool = False
     notes: Optional[str] = None
 
+# Alert System
+class Alert(BaseModel):
+    model_config = ConfigDict(extra="ignore")
+    
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    detection_id: str
+    plate_text: str
+    alert_type: AlertType
+    message: str
+    is_read: bool = False
+    created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+    resolved_at: Optional[datetime] = None
+
+# API Key Management
+class APIKey(BaseModel):
+    model_config = ConfigDict(extra="ignore")
+    
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    key: str
+    name: str
+    user_id: str
+    is_active: bool = True
+    usage_count: int = 0
+    rate_limit: int = 1000  # requests per day
+    created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+    expires_at: Optional[datetime] = None
+
+class APIKeyCreate(BaseModel):
+    name: str
+    rate_limit: int = 1000
+
+# Analytics
+class DailyAnalytics(BaseModel):
+    model_config = ConfigDict(extra="ignore")
+    
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    date: datetime
+    total_detections: int = 0
+    successful_detections: int = 0
+    failed_detections: int = 0
+    unique_plates: int = 0
+    alerts_generated: int = 0
+    avg_confidence: float = 0.0
+    vehicle_types: Dict[str, int] = {}
+
+# System Settings
+class SystemSettings(BaseModel):
+    model_config = ConfigDict(extra="ignore")
+    
+    id: str = "system_settings"
+    confidence_threshold: float = 0.25
+    enable_alerts: bool = True
+    enable_analytics: bool = True
+    max_file_size_mb: int = 10
+    retention_days: int = 30
+    smtp_enabled: bool = False
+    smtp_host: Optional[str] = None
+    smtp_port: Optional[int] = None
+    smtp_username: Optional[str] = None
+    updated_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
